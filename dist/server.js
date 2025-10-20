@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename); // Rota onde contém o arquivo atual
 console.log(__dirname);
 app.use(express.static(path.join(__dirname, '../public'))); // Endereço para carregamentos de arquivos
 /***********************************Exibir Arquivo no Front************************************************ */
-app.use('/imagens', express.static(path.join(__dirname, '../public/')));
+app.use('/imagens', express.static(path.join(__dirname, '../public/imagens')));
 /**************************************************************************************** */
 // Rota que carrega um arquivo HTML
 app.get('/', (req, res) => {

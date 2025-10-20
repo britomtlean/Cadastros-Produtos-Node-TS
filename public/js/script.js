@@ -12,27 +12,37 @@ function mostrarSecao(secaoId) {
 // 📦 Carregar produtos para visualização
 async function carregarProdutos() {
     try {
-        const res = await fetch('/api/produtos');
+        const res = await fetch('https://gestao-de-produtos.up.railway.app/api/produtos'); // URL completa se o front não estiver no mesmo servidor
+        if (!res.ok) throw new Error('Erro ao carregar produtos');
+        
         const produtos = await res.json();
-
         const container = document.getElementById('produtos-container');
         container.innerHTML = '';
+
         produtos.forEach(prod => {
             const div = document.createElement('div');
             div.classList.add('produto');
+
+            // Verifica se há imagem cadastrada
+            const imgSrc = prod.imagem_produtos 
+                ? `/imagens/${prod.imagem_produtos}` 
+                : '/imagens/placeholder.png'; // imagem padrão caso não exista
+
             div.innerHTML = `
-            <img src="/imagens/${prod.imagem_produtos}" alt="${prod.produto_produtos}" />
-            <h3>${prod.produto_produtos}</h3>
-            <p>${prod.descricao_produtos}</p>
-            <p>Preço: R$ ${prod.valor_produtos.toFixed(2)}</p>
-            <p>Estoque: ${prod.estoque_produtos}</p>
-          `;
+                <img src="${imgSrc}" alt="${prod.produto_produtos}" />
+                <h3>${prod.produto_produtos}</h3>
+                <p>${prod.descricao_produtos}</p>
+                <p>💰 Preço: R$ ${Number(prod.valor_produtos).toFixed(2)}</p>
+                <p>📦 Estoque: ${prod.estoque_produtos}</p>
+            `;
             container.appendChild(div);
         });
+
     } catch (err) {
-        console.error(err);
+        console.error('Erro ao carregar produtos:', err);
     }
 }
+
 
 // 📦 Carregar produtos para edição
 async function carregarProdutosEdicao() {
@@ -66,7 +76,7 @@ async function carregarProdutosEdicao() {
 async function carregarProdutosInserir() {
     (function () {
         // Altere se seu backend estiver em outro host/porta
-        const API_URL = "http://localhost:3000/api/produtos"; // ex: "http://localhost:3000/api/produtos"
+        const API_URL = "https://gestao-de-produtos.up.railway.app/api/produtos"; // ex: "http://localhost:3000/api/produtos"
 
         const form = document.getElementById("formProduto");
         const imagemInput = document.getElementById("imagem");
