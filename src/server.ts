@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, '../public'))); // Endereço para ca
 
 /***********************************Exibir Arquivo no Front************************************************ */
 
-app.use('/imagens', express.static(path.join(__dirname, '../public/imagens')));
+app.use('/imagens', express.static(path.join(__dirname, '../public/')));
 
 /**************************************************************************************** */
 

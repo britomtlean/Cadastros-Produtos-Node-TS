@@ -31,6 +31,7 @@ router.post("/produtos", async (req, res) => {
     const nomeArquivo = imagem.name;
     const pastaImagens = path.join(__dirname, "../../public/imagens"); // volta uma pasta se necessário
     const caminhoDestino = path.join(pastaImagens, nomeArquivo);
+    console.log("caminho da imagem: ",caminhoDestino)
 
     await new Promise<void>((resolve, reject) => {
       imagem.mv(caminhoDestino, (err) => (err ? reject(err) : resolve()));
