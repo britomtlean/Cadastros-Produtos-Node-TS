@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url); // Rota com o arquivo atual
 console.log(__filename);
 const __dirname = path.dirname(__filename); // Rota onde contém o arquivo atual
 console.log(__dirname);
-app.use(express.static(path.join(__dirname, '../public'))); // Endereço principal
+app.use(express.static(path.join(__dirname, '../public'))); // Endereço para carregamentos de arquivos
 /***********************************Exibir Arquivo no Front************************************************ */
 app.use('/imagens', express.static(path.join(__dirname, '../public/imagens')));
 /**************************************************************************************** */

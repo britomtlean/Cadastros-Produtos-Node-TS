@@ -29,7 +29,7 @@ router.post("/produtos", async (req, res) => {
     const imagem = req.files.imagem as UploadedFile;
 
     const nomeArquivo = imagem.name;
-    const pastaImagens = path.join(__dirname, "../imagens"); // volta uma pasta se necessário
+    const pastaImagens = path.join(__dirname, "../../public/imagens"); // volta uma pasta se necessário
     const caminhoDestino = path.join(pastaImagens, nomeArquivo);
 
     await new Promise<void>((resolve, reject) => {
