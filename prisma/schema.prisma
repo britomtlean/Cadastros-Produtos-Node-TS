@@ -1,0 +1,73 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cargo {
+  id_cargo     Int    @id @default(autoincrement())
+  cargo_cargos String @db.VarChar(50)
+}
+
+model funcionarios {
+  id_funcionarios      Int      @id @default(autoincrement())
+  nome_funcionarios    String   @db.VarChar(50)
+  contato_funcionarios String   @db.VarChar(50)
+  cargo_funcionarios   String   @db.VarChar(50)
+  cpf_funcionarios     String   @unique
+  vendas               vendas[]
+}
+
+model pagamentos {
+  id_pagamentos        Int    @id @default(autoincrement())
+  pagamento_pagamentos String
+}
+
+model produtos {
+  id_produtos        Int               @id @default(autoincrement())
+  produto_produtos   String
+  descricao_produtos String?
+  valor_produtos     Float             @default(0)
+  estoque_produtos   Int
+  imagem_produtos    String?
+  vendas_produtos    vendas_produtos[]
+}
+
+model usuarios {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  cpf   String @unique
+  senha String
+}
+
+model vendas {
+  id_vendas             Int               @id @default(autoincrement())
+  id_funcionario_vendas Int?
+  data_vendas           DateTime          @default(now())
+  valorTotal_vendas     Float?
+  status                Boolean?
+  funcionarios          funcionarios?     @relation(fields: [id_funcionario_vendas], references: [id_funcionarios], onDelete: Cascade)
+  vendas_produtos       vendas_produtos[]
+
+  @@index([id_funcionario_vendas])
+}
+
+model vendas_produtos {
+  id_vendas_produtos        Int      @id @default(autoincrement())
+  id_venda                  Int
+  id_produto                Int
+  quantidade                Int
+  valorTotal_vendasprodutos Float    @default(0)
+  valorUni                  Float    @default(0)
+
+  vendas   vendas   @relation(fields: [id_venda], references: [id_vendas], onDelete: Cascade)
+  produtos produtos @relation(fields: [id_produto], references: [id_produtos], onDelete: Cascade)
+
+  @@index([id_produto])
+  @@index([id_venda])
+}

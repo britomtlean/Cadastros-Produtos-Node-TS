@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #717088;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        header button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #03aa56;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        header a {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+
+
+        header button:hover {
+            background-color: #555;
+        }
+
+        section {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        section.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+        }
+
+        .produtos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .produto {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .produto img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        form input,
+        form textarea,
+        form button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+
+        .edit-buttons button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .edit-buttons .edit {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .edit-buttons .delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <button onclick="mostrarSecao('cadastrar')">Cadastro de Produtos</button>
+        <button onclick="mostrarSecao('cardapio')">Cardápio</button>
+        <button onclick="mostrarSecao('editar')">Editar Produto</button>
+    </header>
+
+    <!-- Seção de cadastro -->
+    <section id="cadastrar">
+        <h1>Inserir Produto com Imagem</h1>
+
+        <form id="formProduto" enctype="multipart/form-data">
+            <label>
+                Nome do produto *
+                <input type="text" name="produto_produtos" id="produto" required />
+            </label>
+
+            <label>
+                Descrição
+                <textarea name="descricao_produtos" id="descricao" rows="3"></textarea>
+            </label>
+
+            <label>
+                Valor (ex: 8.50) *
+                <input type="text" name="valor_produtos" id="valor" required inputmode="decimal" />
+            </label>
+
+            <label>
+                Estoque *
+                <input type="number" name="estoque_produtos" id="estoque" required min="0" />
+            </label>
+
+            <label>
+                Imagem do produto (PNG/JPG) *
+                <input type="file" name="imagem" id="imagem" accept="image/png, image/jpeg" required />
+            </label>
+
+            <div class="preview" id="previewWrapper" style="display:none;">
+                <div>
+                    <small>Preview:</small>
+                    <div><img id="previewImg" alt="preview da imagem" /></div>
+                </div>
+                <div>
+                    <small id="fileInfo"></small>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button type="submit" id="btnEnviar">Enviar produto</button>
+                <div id="loading" style="display:none;">Enviando…</div>
+            </div>
+
+            <div class="status" id="status" style="display:none;"></div>
+        </form>
+    </section>
+
+    <!-- Seção do cardápio -->
+    <section id="cardapio">
+        <h2>Cardápio</h2>
+        <div class="produtos-container" id="produtos-container"></div>
+    </section>
+
+    <!-- Seção de edição -->
+    <section id="editar">
+        <h2>Editar Produtos</h2>
+        <div class="produtos-container" id="produtos-editar"></div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+import Fastify from "fastify";
+import cors from "@fastify/cors";
+import fastifyStatic from "@fastify/static";
+import fastifyMultipart from "@fastify/multipart";
+import { PrismaClient } from "@prisma/client";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Rotas
+import router from "./routers/produtos.ts";
+
+const fastify = Fastify({ logger: true });
+export const prisma = new PrismaClient();
+
+/************************************Diretórios************************************************ */
+const __filename = fileURLToPath(import.meta.url);
+console.log(__filename);
+
+const __dirname = path.dirname(__filename);
+console.log(__dirname);
+
+/***********************************Plugins************************************************ */
+
+// Habilita CORS
+await fastify.register(cors);
+
+// Habilita upload de arquivos
+await fastify.register(fastifyMultipart);
+
+// Servir arquivos estáticos
+await fastify.register(fastifyStatic, {
+  root: path.join(__dirname),
+  prefix: "/", // prefixo para acessar os arquivos
+});
+
+await fastify.register(fastifyStatic, {
+  root: path.join(__dirname, "imagens"),
+  prefix: "/imagens/", // prefixo para acessar as imagens
+});
+
+/***********************************Rotas************************************************ */
+
+// Rota que carrega arquivos HTML
+fastify.get("/", async (request, reply) => {
+  return reply.sendFile("index.html");
+});
+
+fastify.get("/cardapio", async (request, reply) => {
+  return reply.sendFile("carregar.html");
+});
+
+fastify.get("/cadastrar", async (request, reply) => {
+  return reply.sendFile("inserir.html");
+});
+
+// Registrar rotas da API (adaptando router do Express para Fastify)
+fastify.register(router, { prefix: "/api" });
+
+/***********************************Iniciar Servidor************************************************ */
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000, host: "0.0.0.0" });
+    console.log("Servidor rodando na porta 3000");
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+
+start();
