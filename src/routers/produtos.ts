@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 import type { UploadedFile } from "express-fileupload";
 
+import { Produto } from "../classes/produtos.js";
+
 const router = express.Router();
 const prisma = new PrismaClient();
 
@@ -12,12 +14,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
+/*********************************************Rota para receber produtos******************************************** */
+
 router.get("/produtos", async (req, res) => {
-    const produtos: object = await prisma.produtos.findMany()
+    const produtos:Produto[] = await prisma.produtos.findMany()
     res.status(200).json(produtos)
 })
 
-/*****************************Rota para inserir produtos com imagem********************************************** */
+/********************************************Rota para inserir produtos com imagem********************************************** */
 
 router.post("/produtos", async (req, res) => {
   try {
@@ -25,19 +29,23 @@ router.post("/produtos", async (req, res) => {
       return res.status(400).json({ erro: "Imagem é obrigatória." });
     }
 
-    const { produto_produtos, descricao_produtos, valor_produtos, estoque_produtos } = req.body;
-    const imagem = req.files.imagem as UploadedFile;
 
-    const nomeArquivo = imagem.name;
-    const pastaImagens = path.join(__dirname, "../../public/imagens"); // volta uma pasta se necessário
-    const caminhoDestino = path.join(pastaImagens, nomeArquivo);
+    /****************************************Configurações********************************************* */
+
+    const { produto_produtos, descricao_produtos, valor_produtos, estoque_produtos } = req.body; //recebe variáveis do body
+    const imagem = req.files.imagem as UploadedFile; //recebe arquivo do body
+    const nomeArquivo = imagem.name; //define o nome do arquivo
+    const pastaImagens = path.join(__dirname, "../../public/imagens"); //define a pasta onde armazenar o arquivo
+    const caminhoDestino = path.join(pastaImagens, nomeArquivo); //configura os dados para mover o arquivo
     console.log("caminho da imagem: ",caminhoDestino)
 
+    /******************************************************************************************************** */
+
     await new Promise<void>((resolve, reject) => {
-      imagem.mv(caminhoDestino, (err) => (err ? reject(err) : resolve()));
+      imagem.mv(caminhoDestino, (err) => (err ? reject(err) : resolve())); //código para mover o arquivo com base nos dados configurados
     });
 
-    const novoProduto = await prisma.produtos.create({
+    const novoProduto = await prisma.produtos.create({ //código para inserir dados na tabela
       data: {
         produto_produtos,
         descricao_produtos,

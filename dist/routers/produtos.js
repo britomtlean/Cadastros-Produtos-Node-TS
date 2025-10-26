@@ -6,11 +6,12 @@ const router = express.Router();
 const prisma = new PrismaClient();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+/*********************************************Rota para receber produtos******************************************** */
 router.get("/produtos", async (req, res) => {
     const produtos = await prisma.produtos.findMany();
     res.status(200).json(produtos);
 });
-/*****************************Rota para inserir produtos com imagem********************************************** */
+/********************************************Rota para inserir produtos com imagem********************************************** */
 router.post("/produtos", async (req, res) => {
     try {
         if (!req.files || !req.files.imagem) {

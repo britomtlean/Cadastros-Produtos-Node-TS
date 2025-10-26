@@ -216,6 +216,22 @@ async function carregarProdutosInserir() {
     })();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ✏️ Exemplo de funções de edição/exclusão (a implementar no backend)
 function editarProduto(id) {
     alert('Implementar edição do produto ID: ' + id);
