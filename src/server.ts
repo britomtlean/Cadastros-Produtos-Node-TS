@@ -10,6 +10,7 @@ import fileUpload from "express-fileupload";
 
 // Rotas
 import router from "./routers/produtos.js";
+import sites from "./routers/sites.js";
 
 const app = express();
 export const prisma = new PrismaClient();
@@ -42,5 +43,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use("/api", router);
+app.use("/api", sites);
 
 app.listen(3000, () => console.log("Servidor na porta 3000"));

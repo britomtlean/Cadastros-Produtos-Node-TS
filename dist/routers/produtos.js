@@ -17,14 +17,16 @@ router.post("/produtos", async (req, res) => {
         if (!req.files || !req.files.imagem) {
             return res.status(400).json({ erro: "Imagem é obrigatória." });
         }
-        const { produto_produtos, descricao_produtos, valor_produtos, estoque_produtos } = req.body;
-        const imagem = req.files.imagem;
-        const nomeArquivo = imagem.name;
-        const pastaImagens = path.join(__dirname, "../../public/imagens"); // volta uma pasta se necessário
-        const caminhoDestino = path.join(pastaImagens, nomeArquivo);
+        /****************************************Configurações********************************************* */
+        const { produto_produtos, descricao_produtos, valor_produtos, estoque_produtos } = req.body; //recebe variáveis do body
+        const imagem = req.files.imagem; //recebe arquivo do body
+        const nomeArquivo = imagem.name; //define o nome do arquivo
+        const pastaImagens = path.join(__dirname, "../../public/imagens"); //define a pasta onde armazenar o arquivo
+        const caminhoDestino = path.join(pastaImagens, nomeArquivo); //configura os dados para mover o arquivo
         console.log("caminho da imagem: ", caminhoDestino);
+        /******************************************************************************************************** */
         await new Promise((resolve, reject) => {
-            imagem.mv(caminhoDestino, (err) => (err ? reject(err) : resolve()));
+            imagem.mv(caminhoDestino, (err) => (err ? reject(err) : resolve())); //código para mover o arquivo com base nos dados configurados
         });
         const novoProduto = await prisma.produtos.create({
             data: {

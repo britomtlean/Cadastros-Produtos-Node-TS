@@ -14,6 +14,7 @@ async function carregarProdutos() {
     try {
         const res = await fetch('https://gestao-de-produtos.up.railway.app/api/produtos'); // URL completa se o front não estiver no mesmo servidor
         if (!res.ok) throw new Error('Erro ao carregar produtos');
+        console.log(res.json())
         
         const produtos = await res.json();
         const container = document.getElementById('produtos-container');
