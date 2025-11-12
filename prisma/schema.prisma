@@ -73,4 +73,5 @@ model sites {
   id        Int     @id
   url       String
   descricao String?
+  tit       String?
 }
