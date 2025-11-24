@@ -1,6 +1,6 @@
 
 function mostrarSecao(secaoId) {
-    document.querySelectorAll('section').forEach( //seleciona todas as section 
+    document.querySelectorAll('section').forEach( //seleciona todas as section
         sec => sec.classList.remove('active')); // remove a classe active de todos os elementos
     document.getElementById(secaoId).classList.add('active'); // seleciona o elemento pelo valor do id e adiciona a classe active
 
@@ -14,20 +14,18 @@ async function carregarProdutos() {
     try {
         const res = await fetch('https://gestao-de-produtos.up.railway.app/api/produtos'); // URL completa se o front não estiver no mesmo servidor
         if (!res.ok) throw new Error('Erro ao carregar produtos');
-        console.log(res.json())
-        
+
         const produtos = await res.json();
+        console.log(produtos);
         const container = document.getElementById('produtos-container');
         container.innerHTML = '';
 
-        produtos.forEach(prod => {
+        produtos.forEach((prod) => {
             const div = document.createElement('div');
             div.classList.add('produto');
 
             // Verifica se há imagem cadastrada
-            const imgSrc = prod.imagem_produtos 
-                ? `/imagens/${prod.imagem_produtos}` 
-                : '/imagens/placeholder.png'; // imagem padrão caso não exista
+            const imgSrc = prod.imagem_produtos ? `/imagens/${prod.imagem_produtos}` : '/imagens/placeholder.png'; // imagem padrão caso não exista
 
             div.innerHTML = `
                 <img src="${imgSrc}" alt="${prod.produto_produtos}" />
@@ -38,7 +36,6 @@ async function carregarProdutos() {
             `;
             container.appendChild(div);
         });
-
     } catch (err) {
         console.error('Erro ao carregar produtos:', err);
     }
